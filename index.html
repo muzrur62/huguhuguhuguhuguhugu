@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sevgili Botu 💕</title>
+  <style>
+    body {
+      background: #ece5dd;
+      font-family: "Segoe UI", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .chat-container {
+      width: 380px;
+      height: 600px;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #999;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .header {
+      background: #075e54;
+      color: white;
+      padding: 15px;
+      font-size: 18px;
+    }
+    .messages {
+      flex: 1;
+      padding: 10px;
+      background: #e5ddd5;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .message {
+      padding: 10px 14px;
+      margin: 5px 0;
+      border-radius: 7px;
+      max-width: 80%;
+      font-size: 14px;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    .bot {
+      align-self: flex-start;
+      background: #dcf8c6;
+    }
+    .user {
+      align-self: flex-end;
+      background: #fff;
+    }
+    .input-container {
+      display: flex;
+      border-top: 1px solid #ccc;
+    }
+    input {
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      border: none;
+      outline: none;
+    }
+    button {
+      background: #128c7e;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="header">❤️ Sevgilim</div>
+    <div class="messages" id="chat"></div>
+    <div class="input-container">
+      <input type="text" id="userInput" placeholder="Bir şey yaz..." />
+      <button onclick="sendMessage()">Gönder</button>
+    </div>
+  </div>
+
+  <script>
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("userInput");
+
+    const botGreetings = [
+      "Günaydın aşkım ☀️",
+      "Bugün seni düşünerek uyandım 💭",
+      "Ne yapıyorsun bakalım tatlım?",
+      "Ben kahvaltı yaptım, sen yedin mi?",
+      "Çok özledim seni yaa 😢",
+      "Konuşalım mı biraz? ❤️"
+    ];
+
+    const botResponses = [
+      "Hmm çok güzel 😍",
+      "Canım benim ya 💕",
+      "Bak yine gülümsüyorum senin yüzünden 😌",
+      "Bir sarılsam şimdi sana... 😔",
+      "Tatlısın yine, kıyamam 😚"
+    ];
+
+    let greetingIndex = 0;
+
+    function addMessage(text, sender = "bot") {
+      const msg = document.createElement("div");
+      msg.classList.add("message", sender);
+      msg.innerText = text;
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function sendMessage() {
+      const text = input.value.trim();
+      if (text !== "") {
+        addMessage(text, "user");
+        input.value = "";
+        setTimeout(() => {
+          const reply = getBotReply();
+          addMessage(reply, "bot");
+        }, 1000);
+      }
+    }
+
+    function getBotReply() {
+      return botResponses[Math.floor(Math.random() * botResponses.length)];
+    }
+
+    function sendGreetings() {
+      if (greetingIndex < botGreetings.length) {
+        setTimeout(() => {
+          addMessage(botGreetings[greetingIndex], "bot");
+          greetingIndex++;
+          sendGreetings();
+        }, 2000);
+      }
+    }
+
+    window.onload = () => {
+      sendGreetings();
+    };
+
+    input.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
